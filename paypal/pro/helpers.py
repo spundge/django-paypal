@@ -9,6 +9,7 @@ import urllib2
 
 from django.conf import settings
 from django.forms.models import fields_for_model
+from django.utils import timezone
 from django.utils.datastructures import MergeDict
 from django.utils.http import urlencode
 
@@ -35,8 +36,7 @@ def paypal_time(time_obj=None):
     
 def paypaltime2datetime(s):
     """Convert a PayPal time string to a DateTime."""
-    return datetime.datetime(*(time.strptime(s, PayPalNVP.TIMESTAMP_FORMAT)[:6]))
-
+    return datetime.datetime(*(time.strptime(s, PayPalNVP.TIMESTAMP_FORMAT)[:6])).replace(tzinfo=timezone.utc)
 
 class PayPalError(TypeError):
     """Error thrown when something be wrong."""
